@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/DbTerm.Application/DbTerm.Application.csproj" Id="0e2d2654-4db1-4f21-814a-a1588c64f401" />
+    <Project Path="src/DbTerm.Cli/DbTerm.Cli.csproj" Id="01fea1e6-c472-4a61-9a93-c3ebe9401e61" />
+    <Project Path="src/DbTerm.Domain/DbTerm.Domain.csproj" Id="82b5a0d8-12ea-4c61-8f9d-917537b81f9d" />
+    <Project Path="src/DbTerm.Infrastructure/DbTerm.Infrastructure.csproj" Id="fe94fa40-9c33-4126-908d-2774fd1e2a2c" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DbTerm.Application.Tests/DbTerm.Application.Tests.csproj" Id="6e58ab7c-fdd7-42cf-840a-2c040a85530a" />
+    <Project Path="tests/DbTerm.Cli.Tests/DbTerm.Cli.Tests.csproj" Id="8fa44a5f-2758-4b2e-b5de-4d9ad714b878" />
+    <Project Path="tests/DbTerm.Domain.Tests/DbTerm.Domain.Tests.csproj" Id="6fa0427c-3372-45d2-9ef2-833f06a37fc7" />
+    <Project Path="tests/DbTerm.Infrastructure.Tests/DbTerm.Infrastructure.Tests.csproj" Id="6609adf6-9300-48d3-8981-cd0d28f4602a" />
+  </Folder>
+</Solution>
