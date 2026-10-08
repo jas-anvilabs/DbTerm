@@ -3,4 +3,5 @@
 public interface IDatabaseProvider
 {
     IReadOnlyList<string> ListDatabases();
+    IReadOnlyList<string> ListTables();
 }

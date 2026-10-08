@@ -2,23 +2,16 @@
 
 namespace DbTerm.Cli;
 
-public class CommandProcessor
+public class CommandProcessor(IDatabaseProvider provider)
 {
-    private readonly IDatabaseProvider _provider;
-
-    public CommandProcessor(IDatabaseProvider provider)
-    {
-        _provider = provider;
-    }
-
     public CommandResult Process(string input)
     {
         return input switch
         {
             "\\q" => new CommandResult("", ShouldExit: true),
             "\\?" => new CommandResult(Help.Text, ShouldExit: false),
-            "\\ld" => new CommandResult(string.Join(Environment.NewLine, _provider.ListDatabases()), ShouldExit: false),
-            "\\lt" => new CommandResult("List Tables", ShouldExit: false),
+            "\\ld" => new CommandResult(string.Join(Environment.NewLine, provider.ListDatabases()), ShouldExit: false),
+            "\\lt" => new CommandResult(string.Join(Environment.NewLine, provider.ListTables()), ShouldExit: false),
             _ => new CommandResult(input, ShouldExit: false)
         };
     }

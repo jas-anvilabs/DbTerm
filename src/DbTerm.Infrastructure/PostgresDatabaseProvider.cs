@@ -7,20 +7,27 @@ public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvid
 {
     private readonly string _connectionString = connectionString;
 
-    public IReadOnlyList<string> ListDatabases()
+    public IReadOnlyList<string> ListDatabases() =>
+        QuerySingleColumn(
+            "SELECT datname FROM pg_database WHERE datistemplate = false");
+
+    public IReadOnlyList<string> ListTables() =>
+        QuerySingleColumn(
+            "SELECT tablename FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema')");
+
+    private IReadOnlyList<string> QuerySingleColumn(string sql)
     {
-        var databases = new List<string>();
+        var results = new List<string>();
 
         using var conn = new NpgsqlConnection(_connectionString);
         conn.Open();
-        using var cmd = new NpgsqlCommand(
-            "SELECT datname FROM pg_database WHERE datistemplate = false", conn);
+        using var cmd = new NpgsqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            databases.Add(reader.GetString(0));
+            results.Add(reader.GetString(0));
         }
 
-        return databases;
+        return results;
     }
 }

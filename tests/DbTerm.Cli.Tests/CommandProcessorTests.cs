@@ -37,8 +37,8 @@ public class CommandProcessorTests
     public void Process_ListDatabasesCommand_DisplaysDatabasesAndDoesNotExit()
     {
         var result = CreateProcessor().Process("\\ld");
-        Assert.Contains("alpha", result.Output);
-        Assert.Contains("beta", result.Output);
+        Assert.Contains("db_alpha", result.Output);
+        Assert.Contains("db_beta", result.Output);
         Assert.False(result.ShouldExit);
     }
 
@@ -46,7 +46,8 @@ public class CommandProcessorTests
     public void Process_ListTablesCommand_DisplaysTablesAndDoesNotExit()
     {
         var result = CreateProcessor().Process("\\lt");
-        Assert.Equal("List Tables", result.Output);
+        Assert.Contains("tbl_alpha", result.Output);
+        Assert.Contains("tbl_beta", result.Output);
         Assert.False(result.ShouldExit);
     }
 }
