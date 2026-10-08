@@ -1,7 +1,5 @@
 ﻿using DbTerm.Cli;
 
-var processor = new CommandProcessor();
-
 while (true)
 {
     Console.Write("DbTerm >> ");
@@ -11,7 +9,7 @@ while (true)
         break;
     }
 
-    var result = processor.Process(input);
+    var result = CommandProcessor.Process(input);
     if (result.Output.Length > 0)
     {
         Console.WriteLine(result.Output);

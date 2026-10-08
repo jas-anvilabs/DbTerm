@@ -1,16 +1,16 @@
-﻿using DbTerm.Domain;
+﻿namespace DbTerm.Cli;
 
-namespace DbTerm.Cli;
-
-public class CommandProcessor
+public static class CommandProcessor
 {
-    public CommandResult Process(string input)
+    public static CommandResult Process(string input)
     {
-        if (input == "\\q")
+        return input switch
         {
-            return new CommandResult("", ShouldExit: true);
-        }
-
-        return new CommandResult(input, ShouldExit: false);
+            "\\q" => new CommandResult("", ShouldExit: true),
+            "\\?" => new CommandResult("Help Placeholder", ShouldExit: false),
+            "\\ld" => new CommandResult("List Databases", ShouldExit: false),
+            "\\lt" => new CommandResult("List Tables", ShouldExit: false),
+            _ => new CommandResult(input, ShouldExit: false)
+        };
     }
 }
