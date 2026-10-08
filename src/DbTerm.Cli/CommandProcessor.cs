@@ -1,14 +1,23 @@
-﻿namespace DbTerm.Cli;
+﻿using DbTerm.Application;
 
-public static class CommandProcessor
+namespace DbTerm.Cli;
+
+public class CommandProcessor
 {
-    public static CommandResult Process(string input)
+    private readonly IDatabaseProvider _provider;
+
+    public CommandProcessor(IDatabaseProvider provider)
+    {
+        _provider = provider;
+    }
+
+    public CommandResult Process(string input)
     {
         return input switch
         {
             "\\q" => new CommandResult("", ShouldExit: true),
             "\\?" => new CommandResult(Help.Text, ShouldExit: false),
-            "\\ld" => new CommandResult("List Databases", ShouldExit: false),
+            "\\ld" => new CommandResult(string.Join(Environment.NewLine, _provider.ListDatabases()), ShouldExit: false),
             "\\lt" => new CommandResult("List Tables", ShouldExit: false),
             _ => new CommandResult(input, ShouldExit: false)
         };
