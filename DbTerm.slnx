@@ -1,7 +1,17 @@
 <Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/Design.md" />
+    <File Path="docs/Requirements.md" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
+    <File Path="AUTHORS.md" />
+    <File Path="ChangeLog.md" />
+    <File Path="CODE_OF_CONDUCT.md" />
+    <File Path="CONTRIBUTING.md" />
+    <File Path="INSTALL.md" />
     <File Path="LICENSE" />
+    <File Path="NEWS.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">

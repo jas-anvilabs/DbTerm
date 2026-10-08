@@ -349,6 +349,9 @@ paket-files/
 # CodeRush settings
 **/.cr/
 
+# CodeIt.Right ruleset
+DbTerm.slnx.CodeItRight.xml
+
 # Python Tools for Visual Studio (PTVS)
 **/__pycache__/
 *.pyc
