@@ -1,0 +1,32 @@
+# Normalize line endings: store LF in the repo, convert on checkout per OS.
+* text=auto
+
+# Source & project files
+*.cs      text diff=csharp
+*.csproj  text
+*.slnx    text
+*.sln     text eol=crlf
+*.props   text
+*.targets text
+*.json    text
+*.xml     text
+*.md      text
+*.yml     text
+*.yaml    text
+
+# Scripts (platform-native endings)
+*.sh  text eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binaries (never normalize)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.dll  binary
+*.exe  binary
+*.pdb  binary
+*.snk  binary
