@@ -7,7 +7,7 @@ public static class CommandProcessor
         return input switch
         {
             "\\q" => new CommandResult("", ShouldExit: true),
-            "\\?" => new CommandResult("Help Placeholder", ShouldExit: false),
+            "\\?" => new CommandResult(Help.Text, ShouldExit: false),
             "\\ld" => new CommandResult("List Databases", ShouldExit: false),
             "\\lt" => new CommandResult("List Tables", ShouldExit: false),
             _ => new CommandResult(input, ShouldExit: false)

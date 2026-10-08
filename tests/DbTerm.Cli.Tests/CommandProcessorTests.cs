@@ -1,4 +1,6 @@
-﻿namespace DbTerm.Cli.Tests;
+﻿using DbTerm.Cli;
+
+namespace DbTerm.Cli.Tests;
 
 public class CommandProcessorTests
 {
@@ -18,10 +20,13 @@ public class CommandProcessorTests
     }
 
     [Fact]
-    public void Process_HelpCommand_DisplaysHelpAndDoesNotExit()
+    public void Process_HelpCommand_ListsEachCommandAndDoesNotExit()
     {
         var result = CommandProcessor.Process("\\?");
-        Assert.Equal("Help Placeholder", result.Output);
+        Assert.Contains("\\ld", result.Output);
+        Assert.Contains("\\lt", result.Output);
+        Assert.Contains("\\?", result.Output);
+        Assert.Contains("\\q", result.Output);
         Assert.False(result.ShouldExit);
     }
 
