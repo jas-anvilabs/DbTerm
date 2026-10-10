@@ -43,5 +43,12 @@ public class CommandProcessorTests
         Assert.False(result.ShouldExit);
     }
 
-
+    [Fact]
+    public void Process_DescribeTableCommand_DisplaysTableAndColumnInfoAndDoesNotExit()
+    {
+        var result = CreateProcessor().Process("\\dt fake_table");
+        Assert.Contains("fake_table", result.Output);
+        Assert.Contains("id", result.Output);
+        Assert.False(result.ShouldExit);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using DbTerm.Application;
+using DbTerm.Domain;
 
 namespace DbTerm.Infrastructure;
 
@@ -57,5 +58,10 @@ public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvid
         }
 
         return new QueryResult(columns, rows);
+    }
+
+    public TableDescription DescribeTable(string table)
+    {
+        return DescribeTableCommand.Describe(connectionString, table);
     }
 }
