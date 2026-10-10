@@ -30,4 +30,32 @@ public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvid
 
         return results;
     }
+
+    public QueryResult ExecuteQuery(string sql)
+    {
+        using var conn = new NpgsqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        using var reader = cmd.ExecuteReader();
+
+        var columns = new List<string>();
+        for (int i = 0; i < reader.FieldCount; i++)
+        {
+            columns.Add(reader.GetName(i));
+        }
+
+        var rows = new List<IReadOnlyList<string>>();
+        while (reader.Read())
+        {
+            var row = new List<string>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i)?.ToString() ?? "");
+            }
+
+            rows.Add(row);
+        }
+
+        return new QueryResult(columns, rows);
+    }
 }

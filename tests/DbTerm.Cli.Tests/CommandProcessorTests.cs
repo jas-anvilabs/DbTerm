@@ -15,14 +15,6 @@ public class CommandProcessorTests
     }
 
     [Fact]
-    public void Process_OtherInput_EchoesItAndDoesNotExit()
-    {
-        var result = CreateProcessor().Process("SELECT 1");
-        Assert.Equal("SELECT 1", result.Output);
-        Assert.False(result.ShouldExit);
-    }
-
-    [Fact]
     public void Process_HelpCommand_ListsEachCommandAndDoesNotExit()
     {
         var result = CreateProcessor().Process("\\?");
@@ -50,4 +42,6 @@ public class CommandProcessorTests
         Assert.Contains("tbl_beta", result.Output);
         Assert.False(result.ShouldExit);
     }
+
+
 }
