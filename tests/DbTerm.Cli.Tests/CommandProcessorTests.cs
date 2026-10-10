@@ -18,6 +18,7 @@ public class CommandProcessorTests
     public void Process_HelpCommand_ListsEachCommandAndDoesNotExit()
     {
         var result = CreateProcessor().Process("\\?");
+        Assert.Contains("\\dt ", result.Output);
         Assert.Contains("\\ld", result.Output);
         Assert.Contains("\\lt", result.Output);
         Assert.Contains("\\?", result.Output);

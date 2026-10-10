@@ -6,10 +6,12 @@ public static class Help
         """
         DbTerm Help
         ===========
-
+        
+        \dt <table> - Describe Table
+        ****************************
         \ld - List Databases
         \lt - List Tables
-        ********************
+        ****************************
         \?  - Help
         \q  - Quit
         """;
