@@ -14,6 +14,11 @@ public class FakeDatabaseProvider : IDatabaseProvider
             [new ColumnInfo("id", "integer", false), new ColumnInfo("name", "varchar", true)]
             );
 
+    public ColumnDescription DescribeColumn(string table, string column) =>
+        new ColumnDescription(
+            new ColumnInfo("id", "integer", false)
+            );
+
     public QueryResult ExecuteQuery(string sql) =>
         new QueryResult(
             Columns: ["id", "name"],

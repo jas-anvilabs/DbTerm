@@ -19,6 +19,7 @@ public class CommandProcessorTests
     {
         var result = CreateProcessor().Process("\\?");
         Assert.Contains("\\dt ", result.Output);
+        Assert.Contains("\\dc ", result.Output);
         Assert.Contains("\\ld", result.Output);
         Assert.Contains("\\lt", result.Output);
         Assert.Contains("\\?", result.Output);
@@ -49,6 +50,14 @@ public class CommandProcessorTests
     {
         var result = CreateProcessor().Process("\\dt fake_table");
         Assert.Contains("fake_table", result.Output);
+        Assert.Contains("id", result.Output);
+        Assert.False(result.ShouldExit);
+    }
+
+    [Fact]
+    public void Process_DescribeColumnCommand_DisplaysColumnInfoAndDoesNotExit()
+    {
+        var result = CreateProcessor().Process("\\dc fake_table fake_column");
         Assert.Contains("id", result.Output);
         Assert.False(result.ShouldExit);
     }

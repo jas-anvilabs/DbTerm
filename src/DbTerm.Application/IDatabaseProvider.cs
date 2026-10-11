@@ -8,4 +8,5 @@ public interface IDatabaseProvider
     IReadOnlyList<string> ListTables();
     QueryResult ExecuteQuery(string sql);
     TableDescription DescribeTable(string table);
+    ColumnDescription DescribeColumn(string table, string column);
 }

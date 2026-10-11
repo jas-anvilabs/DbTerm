@@ -64,4 +64,9 @@ public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvid
     {
         return DescribeTableCommand.Describe(connectionString, table);
     }
+
+    public ColumnDescription DescribeColumn(string table, string column)
+    {
+        return DescribeColumnCommand.Describe(connectionString, table, column);
+    }
 }

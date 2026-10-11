@@ -8,6 +8,7 @@ public static class Help
         ===========
         
         \dt <table> - Describe Table
+        \dc <table> <column> - Describe Column
         ****************************
         \ld - List Databases
         \lt - List Tables
