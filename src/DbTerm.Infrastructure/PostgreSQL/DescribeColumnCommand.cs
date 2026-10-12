@@ -1,6 +1,6 @@
 ﻿using DbTerm.Domain;
 
-namespace DbTerm.Infrastructure;
+namespace DbTerm.Infrastructure.PostgreSQL;
 
 public static class DescribeColumnCommand
 {

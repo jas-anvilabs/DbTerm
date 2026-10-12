@@ -1,45 +1,45 @@
-﻿using Npgsql;
-using DbTerm.Application;
+﻿using DbTerm.Application;
 using DbTerm.Domain;
+using Microsoft.Data.Sqlite;
 
-namespace DbTerm.Infrastructure;
+namespace DbTerm.Infrastructure.Sqlite;
 
-public class PostgresDatabaseProvider : IDatabaseProvider
+public class SqliteDatabaseProvider : IDatabaseProvider
 {
     private readonly string _connectionString;
+    private readonly string _dataSource;
 
-    public PostgresDatabaseProvider(DataSourceProfile dataSourceProfile)
+    public SqliteDatabaseProvider(DataSourceProfile dataSourceProfile)
     {
         _connectionString = ConnectionString(dataSourceProfile);
+        _dataSource = dataSourceProfile.Database;
     }
 
     public string ConnectionString(DataSourceProfile dataSourceProfile)
-    { 
+    {
         var connectionString =
-            $"Host={dataSourceProfile.HostOrIPAddress}";
-        connectionString += $";Port={dataSourceProfile.Port}";
-        connectionString += $";Username={dataSourceProfile.User}";
-        connectionString += $";Password={dataSourceProfile.Password}";
-        connectionString += $";Database={dataSourceProfile.Database};";
+            $"Data Source={dataSourceProfile.Database}";
 
         return connectionString;
     }
 
-    public IReadOnlyList<string> ListDatabases() =>
-        QuerySingleColumn(
-            "SELECT datname FROM pg_database WHERE datistemplate = false");
+    public IReadOnlyList<string> ListDatabases()
+    {
+        IReadOnlyList<string> database = new List<string> { $"{_dataSource}" };
+        return database;
+    }
 
     public IReadOnlyList<string> ListTables() =>
         QuerySingleColumn(
-            "SELECT tablename FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema')");
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
 
     private IReadOnlyList<string> QuerySingleColumn(string sql)
     {
         var results = new List<string>();
 
-        using var conn = new NpgsqlConnection(_connectionString);
+        using var conn = new SqliteConnection(_connectionString);
         conn.Open();
-        using var cmd = new NpgsqlCommand(sql, conn);
+        using var cmd = new SqliteCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
@@ -51,9 +51,9 @@ public class PostgresDatabaseProvider : IDatabaseProvider
 
     public QueryResult ExecuteQuery(string sql)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
+        using var conn = new SqliteConnection(_connectionString);
         conn.Open();
-        using var cmd = new NpgsqlCommand(sql, conn);
+        using var cmd = new SqliteCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
 
         var columns = new List<string>();
@@ -79,11 +79,11 @@ public class PostgresDatabaseProvider : IDatabaseProvider
 
     public TableDescription DescribeTable(string table)
     {
-        return DescribeTableCommand.Describe(_connectionString, table);
+        return SqliteDescribeTableCommand.Describe(_connectionString, table);
     }
 
     public ColumnDescription DescribeColumn(string table, string column)
     {
-        return DescribeColumnCommand.Describe(_connectionString, table, column);
+        return SqliteDescribeColumnCommand.Describe(_connectionString, table, column);
     }
 }

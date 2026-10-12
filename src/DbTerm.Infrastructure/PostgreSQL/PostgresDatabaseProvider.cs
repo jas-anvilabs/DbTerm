@@ -1,0 +1,89 @@
+﻿using Npgsql;
+using DbTerm.Application;
+using DbTerm.Domain;
+
+namespace DbTerm.Infrastructure.PostgreSQL;
+
+public class PostgresDatabaseProvider : IDatabaseProvider
+{
+    private readonly string _connectionString;
+
+    public PostgresDatabaseProvider(DataSourceProfile dataSourceProfile)
+    {
+        _connectionString = ConnectionString(dataSourceProfile);
+    }
+
+    public string ConnectionString(DataSourceProfile dataSourceProfile)
+    { 
+        var connectionString =
+            $"Host={dataSourceProfile.HostOrIPAddress}";
+        connectionString += $";Port={dataSourceProfile.Port}";
+        connectionString += $";Username={dataSourceProfile.User}";
+        connectionString += $";Password={dataSourceProfile.Password}";
+        connectionString += $";Database={dataSourceProfile.Database};";
+
+        return connectionString;
+    }
+
+    public IReadOnlyList<string> ListDatabases() =>
+        QuerySingleColumn(
+            "SELECT datname FROM pg_database WHERE datistemplate = false");
+
+    public IReadOnlyList<string> ListTables() =>
+        QuerySingleColumn(
+            "SELECT tablename FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema')");
+
+    private IReadOnlyList<string> QuerySingleColumn(string sql)
+    {
+        var results = new List<string>();
+
+        using var conn = new NpgsqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            results.Add(reader.GetString(0));
+        }
+
+        return results;
+    }
+
+    public QueryResult ExecuteQuery(string sql)
+    {
+        using var conn = new NpgsqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        using var reader = cmd.ExecuteReader();
+
+        var columns = new List<string>();
+        for (int i = 0; i < reader.FieldCount; i++)
+        {
+            columns.Add(reader.GetName(i));
+        }
+
+        var rows = new List<IReadOnlyList<string>>();
+        while (reader.Read())
+        {
+            var row = new List<string>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                row.Add(reader.IsDBNull(i) ? "NULL" : reader.GetValue(i)?.ToString() ?? "");
+            }
+
+            rows.Add(row);
+        }
+
+        return new QueryResult(columns, rows);
+    }
+
+    public TableDescription DescribeTable(string table)
+    {
+        return DescribeTableCommand.Describe(_connectionString, table);
+    }
+
+    public ColumnDescription DescribeColumn(string table, string column)
+    {
+        return DescribeColumnCommand.Describe(_connectionString, table, column);
+    }
+}

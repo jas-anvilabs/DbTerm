@@ -1,4 +1,4 @@
-﻿namespace DbTerm.Infrastructure;
+﻿namespace DbTerm.Infrastructure.PostgreSQL;
 
 public static class InspectTableQuery
 {

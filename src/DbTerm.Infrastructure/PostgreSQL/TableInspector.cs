@@ -1,7 +1,7 @@
 ﻿using DbTerm.Domain;
 using Npgsql;
 
-namespace DbTerm.Infrastructure;
+namespace DbTerm.Infrastructure.PostgreSQL;
 
 public static class TableInspector
 {

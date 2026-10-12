@@ -1,18 +1,17 @@
 ﻿using DbTerm.Domain;
-using Npgsql;
+using Microsoft.Data.Sqlite;
 
-namespace DbTerm.Infrastructure;
+namespace DbTerm.Infrastructure.Sqlite;
 
-public static class ColumnInspector
+public static class SqliteColumnInspector
 {
     public static ColumnInfo Inspect(string connectionString, string table, string column)
     {
-        string query = InspectColumnQuery.SingleColumn;
+        string query = SqliteInspectColumnQuery.SingleColumn;
 
-        using var conn = new NpgsqlConnection(connectionString);
+        using var conn = new SqliteConnection(connectionString);
         conn.Open();
-        using var cmd = new NpgsqlCommand(query, conn);
-        cmd.Parameters.AddWithValue("schema", "public");
+        using var cmd = new SqliteCommand(query, conn);
         cmd.Parameters.AddWithValue("table", table);
         cmd.Parameters.AddWithValue("column", column);
         using var reader = cmd.ExecuteReader();
@@ -26,8 +25,8 @@ public static class ColumnInspector
             }
         }
 
-        bool isNullable = columnInfo["is_not_null"] != "t";
+        bool isNullable = columnInfo["notnull"] != "1";
 
-        return new ColumnInfo(columnInfo["column_name"], columnInfo["data_type"], isNullable);
+        return new ColumnInfo(columnInfo["name"], columnInfo["type"], isNullable);
     }
 }
