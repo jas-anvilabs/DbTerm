@@ -5,6 +5,8 @@ namespace DbTerm.Cli.Tests;
 
 public class FakeDatabaseProvider : IDatabaseProvider
 {
+    public string ConnectionString(DataSourceProfile dataSourceProfile) =>
+        $"Host={dataSourceProfile.HostOrIPAddress}";
     public IReadOnlyList<string> ListDatabases() => ["db_alpha", "db_beta"];
     public IReadOnlyList<string> ListTables() => ["tbl_alpha", "tbl_beta"];
 

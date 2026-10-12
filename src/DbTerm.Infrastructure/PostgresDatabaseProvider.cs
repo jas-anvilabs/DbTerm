@@ -4,9 +4,26 @@ using DbTerm.Domain;
 
 namespace DbTerm.Infrastructure;
 
-public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvider
+public class PostgresDatabaseProvider : IDatabaseProvider
 {
-    private readonly string _connectionString = connectionString;
+    private readonly string _connectionString;
+
+    public PostgresDatabaseProvider(DataSourceProfile dataSourceProfile)
+    {
+        _connectionString = ConnectionString(dataSourceProfile);
+    }
+
+    public string ConnectionString(DataSourceProfile dataSourceProfile)
+    { 
+        var connectionString =
+            $"Host={dataSourceProfile.HostOrIPAddress}";
+        connectionString += $";Port={dataSourceProfile.Port}";
+        connectionString += $";Username={dataSourceProfile.User}";
+        connectionString += $";Password={dataSourceProfile.Password}";
+        connectionString += $";Database={dataSourceProfile.Database};";
+
+        return connectionString;
+    }
 
     public IReadOnlyList<string> ListDatabases() =>
         QuerySingleColumn(
@@ -62,11 +79,11 @@ public class PostgresDatabaseProvider(string connectionString) : IDatabaseProvid
 
     public TableDescription DescribeTable(string table)
     {
-        return DescribeTableCommand.Describe(connectionString, table);
+        return DescribeTableCommand.Describe(_connectionString, table);
     }
 
     public ColumnDescription DescribeColumn(string table, string column)
     {
-        return DescribeColumnCommand.Describe(connectionString, table, column);
+        return DescribeColumnCommand.Describe(_connectionString, table, column);
     }
 }

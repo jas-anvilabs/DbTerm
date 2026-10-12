@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DbTerm.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "DbTermTest"
+    }
+  }
+}
